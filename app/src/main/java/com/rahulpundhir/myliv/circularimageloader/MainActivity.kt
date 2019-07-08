@@ -6,9 +6,10 @@ import android.widget.Button
 import android.widget.Toast
 import com.rahulpundhir.library.CircularImageView
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), ImageUrlTask.ImageUrlListener {
 
-    val IMAGE_LOAD_URL = "https://thecatapi.com/api/images/get?format=src&size=med&type=jpg,png"
+
+    val IMAGE_LOAD_URL = "https://api.thecatapi.com/v1/images/search"
     var imageView: CircularImageView? = null
     var button: Button? = null
 
@@ -20,14 +21,23 @@ class MainActivity : AppCompatActivity() {
         button = findViewById(R.id.change_image_button)
 
 
-        button?.setOnClickListener({
-            imageView?.setImage(object : CircularImageView.CircularImageListener {
-                override fun onImageDownloadFailed() {
-                    Toast.makeText(this@MainActivity,
-                            getString(R.string.message_on_image_failed), Toast.LENGTH_LONG).show()
-                }
+        button?.setOnClickListener {
+            ImageUrlTask(this).execute(IMAGE_LOAD_URL)
+        }
+    }
 
-            }, IMAGE_LOAD_URL)
-        })
+    override fun onImageReceived(url: String) {
+        imageView?.setImage(object : CircularImageView.CircularImageListener {
+            override fun onImageDownloadFailed() {
+                Toast.makeText(this@MainActivity,
+                        getString(R.string.message_on_image_failed), Toast.LENGTH_LONG).show()
+            }
+
+        }, url)
+    }
+
+    override fun onImageUrlFailed() {
+        Toast.makeText(this@MainActivity,
+                getString(R.string.message_on_image_failed), Toast.LENGTH_LONG).show()
     }
 }
