@@ -31,15 +31,19 @@ class ImageDownloaderTask(var listener: ImageDownloaderListener) : AsyncTask<Str
      * @return
      */
     private fun downloadImageBitmap(sUrl: String): Bitmap? {
-        var bitmap: Bitmap? = null
-        try {
-            val inputStream = URL(sUrl).openStream()   // Download Image from URL
-            bitmap = BitmapFactory.decodeStream(inputStream)       // Decode Bitmap
-            inputStream.close()
-        } catch (e: Exception) {
-            e.printStackTrace()
+        var urlSplit = sUrl.split("/")
+        var imageUrl = urlSplit.last()
+        var bitmap: Bitmap? = ImageStorage.readImageFromStorage(imageUrl)
+        if (bitmap == null) {
+            try {
+                val inputStream = URL(sUrl).openStream()   // Download Image from URL
+                bitmap = BitmapFactory.decodeStream(inputStream)       // Decode Bitmap
+                inputStream.close()
+                ImageStorage.saveImageBitmap(bitmap, imageUrl)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
-
         return bitmap
     }
 }
