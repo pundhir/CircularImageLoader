@@ -7,7 +7,6 @@ import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 
-
 object ImageStorage {
 
     fun saveImageBitmap(bitmap: Bitmap, fileName: String) {

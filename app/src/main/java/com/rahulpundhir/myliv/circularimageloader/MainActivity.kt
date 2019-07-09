@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(), ImageUrlTask.ImageUrlListener {
             ImageUrlTask(this).execute(IMAGE_LOAD_URL)
         }
 
-        /*  TODO - Code to remove once we have proper unit tests to test bitmap storage.
+        /*  TODO - Code to remove once we have proper unit tests with mocked environment to test bitmap storage.
          val icon = BitmapFactory.decodeResource(resources, R.drawable.cat)
          ImageStorage.saveImageBitmap(icon, "cat12345.jpg")
          ImageStorage.readImageFromStorage("cat12345.jpg")
@@ -65,24 +65,16 @@ class MainActivity : AppCompatActivity(), ImageUrlTask.ImageUrlListener {
     }
 
     fun requestWriteStoragePermission() {
-        // Check whether this app has write external storage permission or not.
-        val writeExternalStoragePermission = ContextCompat.checkSelfPermission(this@MainActivity,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        // If do not grant write external storage permission.
-        if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
-            // Request user to grant write external storage permission.
-            ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                    REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION)
-        }
-
-    }
-
-    fun hasPermissions(): Boolean {
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
-                return true
+            // Check whether this app has write external storage permission or not.
+            val writeExternalStoragePermission = ContextCompat.checkSelfPermission(this@MainActivity,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            // If do not grant write external storage permission.
+            if (writeExternalStoragePermission != PackageManager.PERMISSION_GRANTED) {
+                // Request user to grant write external storage permission.
+                ActivityCompat.requestPermissions(this@MainActivity, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
+                        REQUEST_CODE_WRITE_EXTERNAL_STORAGE_PERMISSION)
             }
         }
-        return false
     }
 }

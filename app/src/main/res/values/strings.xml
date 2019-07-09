@@ -1,4 +1,4 @@
 <resources>
     <string name="app_name">CircularImageLoader</string>
-    <string name="message_on_image_failed">Avtar loading faild, showing previous avtar</string>
+    <string name="message_on_image_failed">Avtar image loading faild.</string>
 </resources>
